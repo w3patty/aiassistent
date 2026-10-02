@@ -1,0 +1,271 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Мои дела — LegalAI{% endblock %}
+
+{% block content %}
+
+<div class="workspace">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-title">WORKSPACE</div>
+
+        <a href="/dashboard" class="sidebar-link">
+            <span>⌂</span>
+            <span>Главная</span>
+        </a>
+
+        <a href="/case" class="sidebar-link active">
+            <span>▣</span>
+            <span>Мои дела</span>
+        </a>
+
+        <a href="#" class="sidebar-link disabled">
+            <span>▤</span>
+            <span>Документы</span>
+            <small>Скоро</small>
+        </a>
+
+        <a href="#" class="sidebar-link disabled">
+            <span>✦</span>
+            <span>AI Assistant</span>
+            <small>Скоро</small>
+        </a>
+
+        <div class="sidebar-title tools-title">
+            ИНСТРУМЕНТЫ
+        </div>
+
+        <a href="#" class="sidebar-link disabled">
+            <span>▱</span>
+            <span>Шаблоны</span>
+            <small>Скоро</small>
+        </a>
+
+        <a href="#" class="sidebar-link disabled">
+            <span>⚙</span>
+            <span>Настройки</span>
+            <small>Скоро</small>
+        </a>
+
+        <div class="sidebar-bottom">
+            <a href="/logout" class="logout">
+                Выйти
+            </a>
+        </div>
+
+    </aside>
+
+
+    <section class="workspace-content">
+
+        <div class="workspace-header">
+
+            <div>
+
+                <div class="workspace-label">
+                    LEGALAI WORKSPACE
+                </div>
+
+                <h1>Мои дела</h1>
+
+                <p>
+                    Управляйте юридическими делами и клиентами.
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="button primary"
+                onclick="openCaseModal()"
+            >
+                + Новое дело
+            </button>
+
+        </div>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="alert {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        {% if cases %}
+
+            <div class="cases-list">
+
+                {% for case in cases %}
+
+                    <div class="case-card">
+
+                        <div class="case-main">
+
+                            <div class="case-icon">
+                                ▣
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    {{ case.title }}
+                                </h3>
+
+                                <p>
+                                    Клиент: {{ case.client_name }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="case-meta">
+
+                            <span class="case-status">
+                                {{ case.status }}
+                            </span>
+
+                            <span class="case-date">
+                                {{ case.created_at.strftime('%d.%m.%Y') }}
+                            </span>
+
+                            <a
+                                href="/case/{{ case.id }}"
+                                class="case-open"
+                            >
+                                Открыть →
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-workspace cases-empty">
+
+                <div class="empty-icon">
+                    ▣
+                </div>
+
+                <h2>
+                    У вас пока нет дел
+                </h2>
+
+                <p>
+                    Создайте первое юридическое дело,
+                    чтобы начать работу.
+                </p>
+
+                <button
+                    type="button"
+                    class="button primary"
+                    onclick="openCaseModal()"
+                >
+                    + Создать дело
+                </button>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+
+<div id="caseModal" class="modal">
+
+    <div class="modal-card">
+
+        <button
+            type="button"
+            class="modal-close"
+            onclick="closeCaseModal()"
+        >
+            ×
+        </button>
+
+        <div class="modal-icon">
+            ▣
+        </div>
+
+        <h2>Новое дело</h2>
+
+        <p>
+            Добавьте информацию о юридическом деле.
+        </p>
+
+        <form method="POST" action="/case">
+
+            <div class="form-group">
+
+                <label>Название дела</label>
+
+                <input
+                    type="text"
+                    name="title"
+                    placeholder="Например: Договор поставки"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Клиент</label>
+
+                <input
+                    type="text"
+                    name="client_name"
+                    placeholder="Имя или компания"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Описание</label>
+
+                <textarea
+                    name="description"
+                    placeholder="Краткое описание дела..."
+                ></textarea>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="button primary full"
+            >
+                Создать дело
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

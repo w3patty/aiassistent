@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block title %}{{ document.filename }} — LegalAI{% endblock %}
+
+{% block content %}
+
+<div class="workspace">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-title">
+            WORKSPACE
+        </div>
+
+        <a href="/dashboard" class="sidebar-link">
+            <span>⌂</span>
+            Главная
+        </a>
+
+        <a href="/case" class="sidebar-link active">
+            <span>▣</span>
+            Мои дела
+        </a>
+
+        <a href="#" class="sidebar-link disabled">
+            <span>▤</span>
+            Документы
+            <small>Скоро</small>
+        </a>
+
+        <a href="#" class="sidebar-link disabled">
+            <span>✦</span>
+            AI Assistant
+            <small>Скоро</small>
+        </a>
+
+        <div class="sidebar-title tools-title">
+            ИНСТРУМЕНТЫ
+        </div>
+
+        <a href="#" class="sidebar-link disabled">
+            <span>▱</span>
+            Шаблоны
+            <small>Скоро</small>
+        </a>
+
+        <a href="#" class="sidebar-link disabled">
+            <span>⚙</span>
+            Настройки
+            <small>Скоро</small>
+        </a>
+
+        <div class="sidebar-bottom">
+            <a href="/logout" class="logout">
+                Выйти
+            </a>
+        </div>
+
+    </aside>
+
+
+    <section class="workspace-content">
+
+        <a
+            href="/case/{{ case.id }}"
+            class="back-link"
+        >
+            ← Вернуться к делу
+        </a>
+
+
+        <div class="document-page-header">
+
+            <div class="document-page-title">
+
+                <div class="case-big-icon">
+                    ▤
+                </div>
+
+                <div>
+
+                    <div class="workspace-label">
+                        LEGALAI DOCUMENT
+                    </div>
+
+                    <h1>
+                        {{ document.filename }}
+                    </h1>
+
+                    <p>
+                        Дело: {{ case.title }}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="document-type">
+                {{ document.file_type|upper }}
+            </div>
+
+        </div>
+
+
+        <div class="document-stats">
+
+            <div class="case-info-card">
+
+                <span class="info-label">
+                    ФАЙЛ
+                </span>
+
+                <strong>
+                    {{ document.filename }}
+                </strong>
+
+            </div>
+
+
+            <div class="case-info-card">
+
+                <span class="info-label">
+                    ТИП
+                </span>
+
+                <strong>
+                    {{ document.file_type|upper }}
+                </strong>
+
+            </div>
+
+
+            <div class="case-info-card">
+
+                <span class="info-label">
+                    ЗАГРУЖЕН
+                </span>
+
+                <strong>
+                    {{ document.created_at.strftime('%d.%m.%Y') }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="case-panel document-text-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        Извлечённый текст
+                    </h2>
+
+                    <p>
+                        Текст, который LegalAI получил из документа
+                    </p>
+
+                </div>
+
+                <div class="ai-status">
+                    <span></span>
+                    TEXT READY
+                </div>
+
+            </div>
+
+
+            <div class="extracted-text">
+
+                {% if document.extracted_text %}
+
+                    {{ document.extracted_text }}
+
+                {% else %}
+
+                    <div class="documents-empty">
+
+                        <div class="documents-icon">
+                            ⚠
+                        </div>
+
+                        <h3>
+                            Текст не найден
+                        </h3>
+
+                        <p>
+                            Не удалось извлечь текст из этого документа.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div class="case-panel ai-document-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        AI-анализ
+                    </h2>
+
+                    <p>
+                        Анализ документа с помощью LegalAI
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="ai-placeholder">
+
+                <div class="ai-placeholder-icon">
+                    ✦
+                </div>
+
+                <h3>
+                    AI-анализ будет здесь
+                </h3>
+
+                <p>
+                    Следующим этапом подключим AI,
+                    который сможет анализировать этот документ,
+                    находить важные пункты и формировать краткое резюме.
+                </p>
+
+                <button
+                    type="button"
+                    class="button primary"
+                    disabled
+                >
+                    ✦ Запустить AI-анализ
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
